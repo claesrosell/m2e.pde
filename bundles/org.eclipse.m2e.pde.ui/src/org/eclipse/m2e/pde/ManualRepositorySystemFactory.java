@@ -6,8 +6,8 @@ import org.eclipse.aether.connector.basic.BasicRepositoryConnectorFactory;
 import org.eclipse.aether.impl.DefaultServiceLocator;
 import org.eclipse.aether.spi.connector.RepositoryConnectorFactory;
 import org.eclipse.aether.spi.connector.transport.TransporterFactory;
-import org.eclipse.aether.transport.file.FileTransporterFactory;
-import org.eclipse.aether.transport.http.HttpTransporterFactory;
+import org.eclipse.aether.transport.wagon.WagonProvider;
+import org.eclipse.aether.transport.wagon.WagonTransporterFactory;
 
 /**
  * A factory for repository system instances that employs Aether's built-in service locator infrastructure to wire up
@@ -23,11 +23,25 @@ public class ManualRepositorySystemFactory
          * prepopulated DefaultServiceLocator, we only need to register the repository connector and transporter
          * factories.
          */
+
+        /* 
+         * Det verkar som om man måste skapa en egen WagonProvider och lägga till den någonstans 
+         * 
+         * Här kan det finnas info:
+         * 
+         * https://github.com/jenkinsci/repository-connector-plugin/tree/master/src/main/java/org/jvnet/hudson/plugins/repositoryconnector
+         * https://github.com/jenkinsci/repository-connector-plugin/blob/master/src/main/java/org/jvnet/hudson/plugins/repositoryconnector/aether/Aether.java
+         * 
+         */
+    	
         DefaultServiceLocator locator = MavenRepositorySystemUtils.newServiceLocator();
         locator.addService( RepositoryConnectorFactory.class, BasicRepositoryConnectorFactory.class );
-        locator.addService( TransporterFactory.class, FileTransporterFactory.class );
-        locator.addService( TransporterFactory.class, HttpTransporterFactory.class );
+        locator.setServices(WagonProvider.class, new ManualWagonProvider());
+        locator.addService( TransporterFactory.class, WagonTransporterFactory.class );
 
+
+        
+        
         locator.setErrorHandler( new DefaultServiceLocator.ErrorHandler()
         {
             @Override
