@@ -279,35 +279,35 @@ public class MavenLocation implements ITargetLocation {
 				dependenciesElement.appendChild(dependencyElement);
 				
 				String groupId = mavenDependency.getGroupId();
-				if ( groupId != null && groupId.isBlank() == false ) {
+				if ( groupId != null && groupId.isEmpty() == false ) {
 					Element groupIdElement = document.createElement("groupId");
 					groupIdElement.appendChild(document.createTextNode(groupId.trim()));
 					dependencyElement.appendChild(groupIdElement);
 				}
 
 				String artifactId = mavenDependency.getArtifactId();
-				if ( artifactId != null && artifactId.isBlank() == false ) {
+				if ( artifactId != null && artifactId.isEmpty() == false ) {
 					Element artifactIdElement = document.createElement("artifactId");
 					artifactIdElement.appendChild(document.createTextNode(artifactId.trim()));
 					dependencyElement.appendChild(artifactIdElement);
 				}
 
 				String version = mavenDependency.getVersion();
-				if ( version != null && version.isBlank() == false ) {
+				if ( version != null && version.isEmpty() == false ) {
 					Element versionElement = document.createElement("version");
 					versionElement.appendChild(document.createTextNode(version.trim()));
 					dependencyElement.appendChild(versionElement);
 				}
 
 				String scope = mavenDependency.getScope();
-				if ( scope != null && scope.isBlank() == false ) {
+				if ( scope != null && scope.isEmpty() == false ) {
 					Element scopeElement = document.createElement("scope");
 					scopeElement.appendChild(document.createTextNode(scope.trim()));
 					dependencyElement.appendChild(scopeElement);
 				}
 				
 				String optional = mavenDependency.getOptional();
-				if ( optional != null && optional.isBlank() == false ) {
+				if ( optional != null && optional.isEmpty() == false ) {
 					Element optionalElement = document.createElement("optional");
 					optionalElement.appendChild(document.createTextNode(optional.trim()));
 					dependencyElement.appendChild(optionalElement);
@@ -327,8 +327,7 @@ public class MavenLocation implements ITargetLocation {
             transformer.transform(domSource, streamResult);
 
             serializedRepresentation = stringWriter.getBuffer().toString();
-			
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
